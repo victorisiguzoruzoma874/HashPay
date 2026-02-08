@@ -1,5 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type FC } from 'react';
+import * as React from 'react';
 import { AppScreen } from './types';
 import SplashScreen from './screens/SplashScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
@@ -25,8 +25,9 @@ import NetworkSettingsScreen from './screens/NetworkSettingsScreen';
 import FiatDashboardScreen from './screens/FiatDashboardScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from './WalletContext';
+import MainLayout from './components/MainLayout';
 
-const App: React.FC = () => {
+const App: FC = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>(AppScreen.SPLASH);
   const [currentAssetDetails, setCurrentAssetDetails] = useState<string | null>(null);
   const { isAuthenticated } = useWallet();
@@ -125,7 +126,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto min-h-screen relative overflow-x-hidden bg-background-dark shadow-[0_0_100px_rgba(0,0,0,0.8)] border-x border-white/5">
+    <MainLayout currentScreen={currentScreen} onNavigate={(screen) => setCurrentScreen(screen)}>
       <AnimatePresence mode="wait">
         <motion.div
           key={currentScreen}
@@ -138,7 +139,7 @@ const App: React.FC = () => {
           {renderScreen()}
         </motion.div>
       </AnimatePresence>
-    </div>
+    </MainLayout>
   );
 };
 

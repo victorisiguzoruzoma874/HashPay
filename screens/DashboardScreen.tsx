@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 import { AppScreen } from '../types';
 import { useWallet } from '../WalletContext';
 import { useToast } from '../components/Toast';
@@ -9,7 +9,7 @@ interface DashboardScreenProps {
   onNavigate: (screen: AppScreen) => void;
 }
 
-const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
+const DashboardScreen: FC<DashboardScreenProps> = ({ onNavigate }) => {
   const { isLoading, balanceVisible, toggleBalanceVisibility, userProfile, totalFiatValue, notifications, transactions } = useWallet();
   const { showToast } = useToast();
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -45,10 +45,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
       initial="hidden"
       animate="show"
       variants={containerVariants}
-      className="flex flex-col pb-24 bg-background-dark min-h-screen custom-scrollbar overflow-y-auto font-body"
+      className="flex flex-col pb-24 lg:pb-10 bg-background-dark min-h-screen custom-scrollbar overflow-y-auto font-body max-w-7xl mx-auto w-full"
     >
       {/* Header */}
-      <motion.header variants={itemVariants} className="px-6 py-8 flex items-center justify-between sticky top-0 bg-background-dark/80 backdrop-blur-xl z-40 border-b border-white/5">
+      <motion.header variants={itemVariants} className="px-6 py-8 flex items-center justify-between sticky top-0 bg-background-dark/80 backdrop-blur-xl z-40 border-b border-white/5 lg:hidden">
         <div className="flex items-center gap-4">
           <div
             onClick={() => onNavigate(AppScreen.SETTINGS)}
@@ -102,7 +102,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
 
         {/* Action Grid */}
         <motion.section variants={itemVariants} className="px-6">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { label: 'Buy', icon: 'add_shopping_cart', screen: AppScreen.BUY },
               { label: 'Send', icon: 'north_east', screen: AppScreen.SEND },
@@ -133,7 +133,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 mb-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {[
               { label: 'Network Pulse', value: '2.4s', icon: 'speed', color: 'text-blue-400', sub: 'Latent' },
               { label: 'Security Score', value: '98%', icon: 'verified_user', color: 'text-green-400', sub: 'Optimized' },
@@ -153,7 +153,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
             {[
               { label: 'Swap', icon: 'currency_exchange', screen: AppScreen.SWAP, color: 'text-orange-400', bg: 'bg-orange-400/10' },
               { label: 'Escrow', icon: 'lock_clock', screen: AppScreen.ESCROW, color: 'text-purple-400', bg: 'bg-purple-400/10' },
@@ -175,13 +175,13 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
         </motion.section>
 
         {/* Recent Activity */}
-        <motion.section variants={itemVariants} className="px-6 pb-8">
+        <motion.section variants={itemVariants} className="px-6 pb-20 lg:pb-10">
           <div className="flex justify-between items-center mb-8 px-2">
             <h3 className="text-[11px] font-black text-text-tertiary uppercase tracking-[0.4em]">Recent Activity</h3>
             <button className="text-[10px] font-black uppercase text-primary tracking-widest hover:text-primary-light transition-colors">View All</button>
           </div>
-          <div className="flex flex-col gap-4">
-            {transactions.slice(0, 3).map((tx, i) => (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {transactions.slice(0, 4).map((tx, i) => (
               <div key={i} className="flex items-center justify-between p-6 bg-surface-dark/20 rounded-[2rem] border border-white/5 hover:bg-surface-dark/40 hover:border-white/10 transition-all group glass">
                 <div className="flex items-center gap-5">
                   <div className={`size-12 rounded-xl flex items-center justify-center shadow-lg ${tx.type === 'sent' ? 'bg-error-bg text-error' : 'bg-success-bg text-success'} border border-white/5`}>
@@ -202,29 +202,6 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) => {
           </div>
         </motion.section>
       </main>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 w-full glass border-t border-white/10 pb-safe z-50">
-        <div className="max-w-md mx-auto flex items-center justify-around px-4 h-24">
-          {[
-            { label: 'Home', icon: 'home', active: true, action: () => onNavigate(AppScreen.DASHBOARD) },
-            { label: 'Assets', icon: 'account_balance_wallet', action: () => onNavigate(AppScreen.ASSETS) },
-            { label: 'Swap', icon: 'swap_horiz', action: () => onNavigate(AppScreen.SWAP) },
-            { label: 'Settings', icon: 'settings', action: () => onNavigate(AppScreen.SETTINGS) }
-          ].map((item, i) => (
-            <button
-              key={i}
-              onClick={item.action}
-              className={`flex flex-col items-center gap-2 min-w-[72px] transition-all active:scale-95 ${item.active ? 'text-primary scale-110' : 'text-text-tertiary hover:text-white'}`}
-            >
-              <div className={`relative ${item.active ? 'before:content-[""] before:absolute before:-top-2 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-primary before:rounded-full before:animate-bounce shadow-xl' : ''}`}>
-                <span className={`material-symbols-outlined text-[30px] ${item.active ? 'font-fill opacity-100' : 'opacity-60'}`}>{item.icon}</span>
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
     </motion.div>
   );
 };
