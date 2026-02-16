@@ -1,0 +1,9 @@
+[package]
+name = "HashPay"
+version = "0.0.1"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+hashpay = "0xbb164f1767e28fe711ba54cff6f0e220b4dae6d608a04a1192684c1962552a8e"
