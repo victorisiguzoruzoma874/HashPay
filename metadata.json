@@ -1,0 +1,8 @@
+
+{
+  "name": "Hash Pay",
+  "description": "A high-end fintech application for global payments on the SUI network, featuring instant settlements, smart escrow, and AI-powered voice commands.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
