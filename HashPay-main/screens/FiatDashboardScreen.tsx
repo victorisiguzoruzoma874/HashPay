@@ -133,6 +133,57 @@ const FiatDashboardScreen: React.FC<FiatDashboardScreenProps> = ({ onBack }) => 
                     </div>
                 </div>
             </div>
+
+            {/* Recent Bank Activity Summary */}
+            <div className="mb-16">
+                <div className="flex justify-between items-center mb-8 px-2">
+                    <h3 className="text-[13px] font-black text-white uppercase tracking-[0.3em]">Recent Bank Activity</h3>
+                    <button onClick={() => setActiveTab('bank-transactions')} className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">View All</button>
+                </div>
+                <div className="grid grid-cols-2 gap-8">
+                    {/* Local Tx Summary */}
+                    <div className="bg-surface-dark/20 rounded-[2.5rem] border border-white/5 p-8 glass">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="size-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
+                            </div>
+                            <span className="text-[10px] font-black text-white uppercase tracking-widest">Recent Local</span>
+                        </div>
+                        <div className="space-y-4">
+                            {localBankTx.slice(0, 2).map((tx, i) => (
+                                <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl">
+                                    <div className="flex flex-col">
+                                        <p className="text-[10px] font-black text-white truncate max-w-[120px]">{tx.recipient}</p>
+                                        <p className="text-[8px] font-bold text-text-tertiary uppercase tracking-widest">{tx.date}</p>
+                                    </div>
+                                    <p className="text-xs font-black text-white">₦{tx.amount.toLocaleString()}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* International Tx Summary */}
+                    <div className="bg-surface-dark/20 rounded-[2.5rem] border border-white/5 p-8 glass">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="size-10 rounded-xl bg-[#2176ff]/20 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-[#2176ff] text-xl">public</span>
+                            </div>
+                            <span className="text-[10px] font-black text-white uppercase tracking-widest">Recent Global</span>
+                        </div>
+                        <div className="space-y-4">
+                            {intBankTx.slice(0, 2).map((tx, i) => (
+                                <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl">
+                                    <div className="flex flex-col">
+                                        <p className="text-[10px] font-black text-white truncate max-w-[120px]">{tx.recipient}</p>
+                                        <p className="text-[8px] font-bold text-text-tertiary uppercase tracking-widest">{tx.date}</p>
+                                    </div>
+                                    <p className="text-xs font-black text-white">{tx.currency} {tx.amount.toLocaleString()}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </motion.div>
     );
 
